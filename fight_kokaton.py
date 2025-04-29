@@ -7,6 +7,7 @@ import pygame as pg
 
 WIDTH = 1100  # ゲームウィンドウの幅
 HEIGHT = 650  # ゲームウィンドウの高さ
+HEIGHT50 = HEIGHT - 50
 NUM_OF_BOMBS = 5  # 爆弾の個数
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -141,6 +142,19 @@ class Bomb:
         screen.blit(self.img, self.rct)
 
 
+class Score:
+    def __init__(self):
+        self.fonto = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
+        self.color = (0, 0, 255)
+        self.num = 0
+        self.img = self.fonto.render(f"スコア:{self.num}", True, self.color)
+        self.rct = [20, HEIGHT50]
+    
+    def update(self, screen: pg.Surface):
+        self.img = self.fonto.render(f"スコア:{self.num}", True, self.color)
+        screen.blit(self.img, self.rct)
+
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -151,6 +165,7 @@ def main():
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
     clock = pg.time.Clock()
     tmr = 0
+    scores = Score()
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -179,6 +194,7 @@ def main():
                     beam = None  # ビームを消す
                     bombs[j] = None  # 爆弾を消す
                     bird.change_img(6, screen)
+                    scores.num += 1
             bombs = [bomb for bomb in bombs if bomb is not None]  # 撃ち落とされてない爆弾だけのリストにする
 
         key_lst = pg.key.get_pressed()
@@ -187,6 +203,7 @@ def main():
             beam.update(screen) 
         for bomb in bombs:
             bomb.update(screen) 
+        scores.update(screen)
         pg.display.update()
         tmr += 1
         clock.tick(50)
@@ -197,3 +214,4 @@ if __name__ == "__main__":
     main()
     pg.quit()
     sys.exit()
+    
