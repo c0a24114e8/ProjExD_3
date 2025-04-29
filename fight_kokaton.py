@@ -142,7 +142,7 @@ class Bomb:
         screen.blit(self.img, self.rct)
 
 
-class Score:
+class Score: # Exercise1 スコア表示 Complite
     def __init__(self):
         self.fonto = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
         self.color = (0, 0, 255)
@@ -197,13 +197,13 @@ def main():
                     bombs[k] = None  # 爆弾を消す
                     bird.change_img(6, screen)
                     scores.num += 1
-            beamlist = [bomb for bomb in beamlist if bomb  is not None]
+            beamlist = [bomb for bomb in beamlist if bomb  is not None] #ビームVersion
             bombs = [bomb for bomb in bombs if bomb is not None]  # 撃ち落とされてない爆弾だけのリストにする
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
 
-        new_beam = []
+        new_beam = [] # ビームが範囲外に行ったときに消すやつ
         for beam in beamlist:
             beam.update(screen)
         
